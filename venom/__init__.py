@@ -16,6 +16,7 @@ from venom.diffusion.one_step import ConsistencyModel, MeanFlow, ProgressiveDist
 from venom.diffusion.pfgm import PFGMDiffusion, PFGMPlusPlusDiffusion
 from venom.diffusion.samplers import DDIMSampler, DDPMSampler, DPMSolverSampler
 from venom.diffusion.score_sde import ScoreSDEDiffusion, SubVPSDE, VESDE, VPSDE
+from venom.gan import DCGANDiscriminator, DCGANGenerator, MLPDiscriminator, MLPGenerator
 from venom.vae import BetaVAE, CVAE, ConvVAE, FlowVAE, HierarchicalVAE, IWAE, LadderVAE, VAE, VQVAE
 
 __all__ = [
@@ -25,6 +26,8 @@ __all__ = [
     "BetaVAE",
     "CVAE",
     "ConvVAE",
+    "DCGANDiscriminator",
+    "DCGANGenerator",
     "DiT",
     "EDMDiffusion",
     "FlowVAE",
@@ -38,6 +41,8 @@ __all__ = [
     "IWAE",
     "LadderVAE",
     "MeanFlow",
+    "MLPDiscriminator",
+    "MLPGenerator",
     "MNISTClassifier",
     "NCSNDiffusion",
     "OptimalTransportCFM",

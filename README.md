@@ -54,6 +54,23 @@ VAE models live under `venom.vae` and use a separate MNIST training entrypoint.
 | Ladder / Hierarchical VAE | `ladder-vae`, `hierarchical-vae` | Two-level latent hierarchy for multi-scale image modeling. |
 | Flow-VAE | `flow-vae` | ConvVAE with planar normalizing flows in the posterior. |
 
+## Supported GAN Models
+
+GAN models live under `venom.gan` and use a separate MNIST training entrypoint.
+
+| Family | `--variant` | What is trained |
+|---|---|---|
+| GAN | `gan` | Original MLP generator/discriminator with the vanilla minimax/BCE loss. |
+| DCGAN | `dcgan` | Convolutional generator and discriminator for image GAN training. |
+| CGAN | `cgan` | Label-conditional DCGAN with class embeddings in generator and discriminator. |
+| ACGAN | `acgan` | Conditional GAN with an auxiliary classifier head in the discriminator. |
+| InfoGAN | `infogan` | GAN with a latent code prediction head and mutual-information-style code loss. |
+| LSGAN | `lsgan` | DCGAN architecture trained with least-squares adversarial loss. |
+| WGAN | `wgan` | Wasserstein critic objective with weight clipping. |
+| WGAN-GP | `wgan-gp` | Wasserstein critic objective with gradient penalty. |
+| HingeGAN | `hinge-gan` | DCGAN architecture trained with hinge adversarial loss. |
+| SNGAN | `sn-gan` | Hinge GAN with spectral normalization in the discriminator. |
+
 ## Supported Samplers
 
 | Sampler | CLI option | Compatible checkpoints | Notes |
@@ -183,6 +200,28 @@ python train_vae.py --variant flow-vae --epochs 5
 
 VAE checkpoints and preview grids are written to `runs/mnist_vae/<variant>/`.
 
+GAN training:
+
+```bash
+# Original GAN and DCGAN
+python train_gan.py --variant gan --epochs 5
+python train_gan.py --variant dcgan --epochs 5
+
+# Conditional and information-theoretic GANs
+python train_gan.py --variant cgan --epochs 5
+python train_gan.py --variant acgan --epochs 5
+python train_gan.py --variant infogan --epochs 5
+
+# Loss/stability variants
+python train_gan.py --variant lsgan --epochs 5
+python train_gan.py --variant wgan --epochs 5
+python train_gan.py --variant wgan-gp --epochs 5
+python train_gan.py --variant hinge-gan --epochs 5
+python train_gan.py --variant sn-gan --epochs 5
+```
+
+GAN checkpoints and preview grids are written to `runs/mnist_gan/<variant>/`.
+
 ## Sample
 
 ```bash
@@ -227,6 +266,13 @@ VAE checkpoints use `sample_vae.py`:
 ```bash
 python sample_vae.py --checkpoint runs/mnist_vae/conv-vae/model_005.pt --num-samples 64
 python sample_vae.py --checkpoint runs/mnist_vae/cvae/model_005.pt --labels 0,1,2,3,4,5,6,7,8,9
+```
+
+GAN checkpoints use `sample_gan.py`:
+
+```bash
+python sample_gan.py --checkpoint runs/mnist_gan/dcgan/model_005.pt --num-samples 64
+python sample_gan.py --checkpoint runs/mnist_gan/cgan/model_005.pt --labels 0,1,2,3,4,5,6,7,8,9
 ```
 
 ## Classifier Guidance
@@ -337,6 +383,19 @@ vq_vae = VQVAE(image_size=28, channels=1, embedding_dim=64, codebook_size=512)
 vq_loss = vq_vae.training_loss(images)
 ```
 
+GAN API:
+
+```python
+import torch
+
+from venom.gan import build_mnist_gan
+
+generator, discriminator, config = build_mnist_gan("dcgan", latent_dim=128)
+z = torch.randn(8, 128)
+samples = generator(z)
+logits = discriminator(samples)["logits"]
+```
+
 ## Notes
 
 This package is intended as a clean research scaffold, not a drop-in reproduction
@@ -353,8 +412,10 @@ of the full OpenAI `guided-diffusion` or EDM codebases. The APIs separate:
 - consistency, shortcut, MeanFlow, progressive distillation: `venom.diffusion.one_step`
 - fast samplers: `venom.diffusion.samplers`
 - foundational image VAE models: `venom.vae`
+- foundational image GAN models: `venom.gan`
 - MNIST diffusion examples: `venom.diffusion.train_mnist`, `venom.diffusion.sample_mnist`
 - MNIST VAE examples: `venom.vae.train_mnist`, `venom.vae.sample_mnist`
+- MNIST GAN examples: `venom.gan.train_mnist`, `venom.gan.sample_mnist`
 
 Images are normalized to `[-1, 1]` during training and converted back to `[0, 1]`
 when saving grids.
@@ -392,3 +453,13 @@ publication where available; recent preprints are marked as arXiv.
 - **VQ-VAE**: van den Oord, Vinyals, and Kavukcuoglu. *Neural Discrete Representation Learning*. NeurIPS 2017.
 - **Ladder VAE**: Sønderby et al. *Ladder Variational Autoencoders*. NeurIPS 2016.
 - **Normalizing Flow VAE**: Rezende and Mohamed. *Variational Inference with Normalizing Flows*. ICML 2015.
+- **GAN**: Goodfellow et al. *Generative Adversarial Nets*. NeurIPS 2014.
+- **CGAN**: Mirza and Osindero. *Conditional Generative Adversarial Nets*. arXiv 2014.
+- **DCGAN**: Radford, Metz, and Chintala. *Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks*. ICLR 2016.
+- **InfoGAN**: Chen et al. *InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets*. NeurIPS 2016.
+- **LSGAN**: Mao et al. *Least Squares Generative Adversarial Networks*. ICCV 2017.
+- **WGAN**: Arjovsky, Chintala, and Bottou. *Wasserstein GAN*. ICML 2017.
+- **WGAN-GP**: Gulrajani et al. *Improved Training of Wasserstein GANs*. NeurIPS 2017.
+- **ACGAN**: Odena, Olah, and Shlens. *Conditional Image Synthesis with Auxiliary Classifier GANs*. ICML 2017.
+- **HingeGAN**: Lim and Ye. *Geometric GAN*. arXiv 2017; commonly used as the hinge adversarial objective in modern GAN training.
+- **SNGAN**: Miyato et al. *Spectral Normalization for Generative Adversarial Networks*. ICLR 2018.

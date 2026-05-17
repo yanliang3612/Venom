@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "venom"
 version = "0.1.0"
-description = "Educational PyTorch implementations of diffusion, score SDE, flow matching, VAE, consistency, MeanFlow, PFGM++, DiT, and fast samplers."
+description = "Educational PyTorch implementations of diffusion, score SDE, flow matching, VAE, GAN, consistency, MeanFlow, PFGM++, DiT, and fast samplers."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -31,6 +31,8 @@ venom-train-classifier = "venom.diffusion.train_classifier_mnist:main"
 venom-distill-mnist = "venom.diffusion.train_progressive_distill_mnist:main"
 venom-train-vae-mnist = "venom.vae.train_mnist:main"
 venom-sample-vae = "venom.vae.sample_mnist:main"
+venom-train-gan-mnist = "venom.gan.train_mnist:main"
+venom-sample-gan = "venom.gan.sample_mnist:main"
 
 [tool.setuptools.packages.find]
 include = ["venom*"]
