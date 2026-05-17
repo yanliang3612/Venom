@@ -1,6 +1,12 @@
 # Venom: Generative Modeling Toolkit
 
 <p align="center">
+  <a href="https://divinyan.com/Venom/">
+    <img src="https://img.shields.io/badge/Project%20Page-divinyan.com%2FVenom-2ea44f?style=for-the-badge" alt="Project Page">
+  </a>
+</p>
+
+<p align="center">
   <img src="assets/venom-logo.png" alt="Venom project logo" width="240">
 </p>
 
@@ -623,3 +629,14 @@ publication where available; recent preprints are marked as arXiv.
 - **Sliced Score Matching**: Song et al. *Sliced Score Matching: A Scalable Approach to Density and Score Estimation*. UAI 2020.
 - **Deep EBM**: Du and Mordatch. *Implicit Generation and Modeling with Energy Based Models*. NeurIPS 2019.
 - **JEM**: Grathwohl et al. *Your Classifier is Secretly an Energy Based Model and You Should Treat it Like One*. ICLR 2020.
+
+## Citation
+
+```bibtex
+@software{yan2026venom,
+  title = {Venom: A PyTorch Generative Modeling Toolkit},
+  author = {Yan, Liang},
+  year = {2026},
+  url = {https://github.com/yanliang3612/Venom}
+}
+```
