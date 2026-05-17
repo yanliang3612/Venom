@@ -1,4 +1,4 @@
-# diffusion-zoo-pytorch
+# Venom
 
 Educational PyTorch implementations of the main discrete-time and continuous-time diffusion families:
 
@@ -88,7 +88,7 @@ python train.py --variant meanflow --backbone dit --epochs 5
 Progressive distillation starts from a trained DDPM-family teacher:
 
 ```bash
-python -m diffusion_zoo.train_progressive_distill_mnist \
+python -m venom.train_progressive_distill_mnist \
   --teacher-checkpoint runs/mnist/improved-ddpm/model_005.pt \
   --student-steps 50 \
   --epochs 3
@@ -140,7 +140,7 @@ python sample.py --checkpoint runs/mnist/meanflow/model_005.pt --sample-steps 1
 Train a timestep-conditioned noised classifier:
 
 ```bash
-python -m diffusion_zoo.train_classifier_mnist --epochs 3
+python -m venom.train_classifier_mnist --epochs 3
 ```
 
 Then sample a class-conditional ADM checkpoint with classifier guidance:
@@ -159,8 +159,8 @@ python sample.py \
 ```python
 import torch
 
-from diffusion_zoo import GaussianDiffusion, UNet2D
-from diffusion_zoo.samplers import DPMSolverSampler
+from venom import GaussianDiffusion, UNet2D
+from venom.samplers import DPMSolverSampler
 
 model = UNet2D(image_channels=1, base_channels=64)
 diffusion = GaussianDiffusion(model, timesteps=1000)
@@ -177,7 +177,7 @@ Continuous-time API:
 ```python
 import torch
 
-from diffusion_zoo import ScoreSDEDiffusion, UNet2D, VESDE
+from venom import ScoreSDEDiffusion, UNet2D, VESDE
 
 model = UNet2D(image_channels=1, base_channels=64)
 diffusion = ScoreSDEDiffusion(model, VESDE())
@@ -192,7 +192,7 @@ Flow matching API:
 ```python
 import torch
 
-from diffusion_zoo import RectifiedFlow, UNet2D
+from venom import RectifiedFlow, UNet2D
 
 model = UNet2D(image_channels=1, base_channels=64)
 flow = RectifiedFlow(model)
@@ -207,7 +207,7 @@ One-step API:
 ```python
 import torch
 
-from diffusion_zoo import MeanFlow, UNet2D
+from venom import MeanFlow, UNet2D
 
 model = UNet2D(image_channels=1, base_channels=64)
 meanflow = MeanFlow(model)
@@ -220,7 +220,7 @@ samples = meanflow.sample(batch_size=8, device=x.device, steps=1)
 Progressive distillation API:
 
 ```python
-from diffusion_zoo import ProgressiveDistillation
+from venom import ProgressiveDistillation
 
 distiller = ProgressiveDistillation(student_diffusion, teacher_diffusion, student_steps=50)
 loss = distiller.training_loss(images)
@@ -231,17 +231,17 @@ loss = distiller.training_loss(images)
 This package is intended as a clean research scaffold, not a drop-in reproduction
 of the full OpenAI `guided-diffusion` or EDM codebases. The APIs separate:
 
-- model architecture: `diffusion_zoo.models`
-- beta/noise schedules: `diffusion_zoo.schedules`
-- DDPM-family objective: `diffusion_zoo.diffusion`
-- EDM objective: `diffusion_zoo.edm`
-- NCSN objective: `diffusion_zoo.ncsn`
-- Score SDE objectives and SDE definitions: `diffusion_zoo.score_sde`
-- PFGM/PFGM++ objective: `diffusion_zoo.pfgm`
-- flow matching, rectified flow, OT-CFM, stochastic interpolants: `diffusion_zoo.flow_matching`
-- consistency, shortcut, MeanFlow, progressive distillation: `diffusion_zoo.one_step`
-- fast samplers: `diffusion_zoo.samplers`
-- MNIST command-line examples: `diffusion_zoo.train_mnist`, `diffusion_zoo.sample_mnist`
+- model architecture: `venom.models`
+- beta/noise schedules: `venom.schedules`
+- DDPM-family objective: `venom.diffusion`
+- EDM objective: `venom.edm`
+- NCSN objective: `venom.ncsn`
+- Score SDE objectives and SDE definitions: `venom.score_sde`
+- PFGM/PFGM++ objective: `venom.pfgm`
+- flow matching, rectified flow, OT-CFM, stochastic interpolants: `venom.flow_matching`
+- consistency, shortcut, MeanFlow, progressive distillation: `venom.one_step`
+- fast samplers: `venom.samplers`
+- MNIST command-line examples: `venom.train_mnist`, `venom.sample_mnist`
 
 Images are normalized to `[-1, 1]` during training and converted back to `[0, 1]`
 when saving grids.

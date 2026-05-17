@@ -7,10 +7,10 @@ import torch
 from torch.optim import AdamW
 from tqdm import tqdm
 
-from diffusion_zoo.data import make_mnist_loader
-from diffusion_zoo.factory import build_mnist_diffusion, checkpoint_config
-from diffusion_zoo.one_step import ProgressiveDistillation
-from diffusion_zoo.utils import default_device, ensure_dir, seed_everything
+from venom.data import make_mnist_loader
+from venom.factory import build_mnist_diffusion, checkpoint_config
+from venom.one_step import ProgressiveDistillation
+from venom.utils import default_device, ensure_dir, seed_everything
 
 
 def parse_args() -> argparse.Namespace:

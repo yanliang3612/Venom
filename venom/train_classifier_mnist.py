@@ -8,10 +8,10 @@ import torch.nn.functional as F
 from torch.optim import AdamW
 from tqdm import tqdm
 
-from diffusion_zoo.data import make_mnist_loader
-from diffusion_zoo.diffusion import GaussianDiffusion
-from diffusion_zoo.models import MNISTClassifier, UNet2D
-from diffusion_zoo.utils import default_device, ensure_dir, seed_everything
+from venom.data import make_mnist_loader
+from venom.diffusion import GaussianDiffusion
+from venom.models import MNISTClassifier, UNet2D
+from venom.utils import default_device, ensure_dir, seed_everything
 
 
 def parse_args() -> argparse.Namespace:

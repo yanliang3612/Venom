@@ -6,15 +6,15 @@ from pathlib import Path
 import torch
 from torchvision.utils import save_image
 
-from diffusion_zoo.factory import build_mnist_diffusion
-from diffusion_zoo.guidance import classifier_guidance_gradient
-from diffusion_zoo.models import MNISTClassifier
-from diffusion_zoo.samplers import make_sampler
-from diffusion_zoo.utils import default_device, unnormalize_to_zero_to_one
+from venom.factory import build_mnist_diffusion
+from venom.guidance import classifier_guidance_gradient
+from venom.models import MNISTClassifier
+from venom.samplers import make_sampler
+from venom.utils import default_device, unnormalize_to_zero_to_one
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Sample MNIST images from a diffusion-zoo checkpoint.")
+    parser = argparse.ArgumentParser(description="Sample MNIST images from a venom checkpoint.")
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--out", type=Path, default=Path("samples.png"))
     parser.add_argument("--num-samples", type=int, default=64)

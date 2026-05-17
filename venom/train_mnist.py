@@ -8,14 +8,14 @@ from torch.optim import AdamW
 from torchvision.utils import save_image
 from tqdm import tqdm
 
-from diffusion_zoo.data import make_mnist_loader
-from diffusion_zoo.factory import VARIANTS, build_mnist_diffusion, checkpoint_config
-from diffusion_zoo.samplers import make_sampler
-from diffusion_zoo.utils import default_device, ensure_dir, seed_everything, unnormalize_to_zero_to_one
+from venom.data import make_mnist_loader
+from venom.factory import VARIANTS, build_mnist_diffusion, checkpoint_config
+from venom.samplers import make_sampler
+from venom.utils import default_device, ensure_dir, seed_everything, unnormalize_to_zero_to_one
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Train diffusion-zoo models on MNIST.")
+    parser = argparse.ArgumentParser(description="Train venom models on MNIST.")
     parser.add_argument("--variant", choices=VARIANTS, default="ddpm")
     parser.add_argument("--backbone", choices=["unet", "dit"], default="unet")
     parser.add_argument("--data-dir", type=Path, default=Path("data"))

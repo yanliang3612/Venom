@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import torch
 
-from diffusion_zoo.edm import EDMDiffusion
-from diffusion_zoo.schedules import append_dims, karras_sigmas
+from venom.edm import EDMDiffusion
+from venom.schedules import append_dims, karras_sigmas
 
 
 class PFGMPlusPlusDiffusion(EDMDiffusion):

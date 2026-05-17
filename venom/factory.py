@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from diffusion_zoo.diffusion import GaussianDiffusion
-from diffusion_zoo.edm import EDMDiffusion
-from diffusion_zoo.flow_matching import FlowMatchingDiffusion
-from diffusion_zoo.models import DiT, UNet2D
-from diffusion_zoo.ncsn import NCSNDiffusion
-from diffusion_zoo.one_step import ConsistencyModel, MeanFlow, ShortcutModel
-from diffusion_zoo.pfgm import PFGMDiffusion, PFGMPlusPlusDiffusion
-from diffusion_zoo.score_sde import ScoreSDEDiffusion, SubVPSDE, VESDE, VPSDE
+from venom.diffusion import GaussianDiffusion
+from venom.edm import EDMDiffusion
+from venom.flow_matching import FlowMatchingDiffusion
+from venom.models import DiT, UNet2D
+from venom.ncsn import NCSNDiffusion
+from venom.one_step import ConsistencyModel, MeanFlow, ShortcutModel
+from venom.pfgm import PFGMDiffusion, PFGMPlusPlusDiffusion
+from venom.score_sde import ScoreSDEDiffusion, SubVPSDE, VESDE, VPSDE
 
 
 VARIANTS = (

@@ -1,5 +1,5 @@
-from diffusion_zoo.diffusion import GaussianDiffusion
-from diffusion_zoo.models import UNet2D
+from venom.diffusion import GaussianDiffusion
+from venom.models import UNet2D
 
 TinyUNet = UNet2D
 

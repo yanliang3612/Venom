@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "diffusion-zoo-pytorch"
+name = "venom"
 version = "0.1.0"
 description = "Educational PyTorch implementations of diffusion, score SDE, flow matching, consistency, MeanFlow, PFGM++, DiT, and fast samplers."
 readme = "README.md"
@@ -25,10 +25,10 @@ dev = [
 ]
 
 [project.scripts]
-diffusion-zoo-train-mnist = "diffusion_zoo.train_mnist:main"
-diffusion-zoo-sample = "diffusion_zoo.sample_mnist:main"
-diffusion-zoo-train-classifier = "diffusion_zoo.train_classifier_mnist:main"
-diffusion-zoo-distill-mnist = "diffusion_zoo.train_progressive_distill_mnist:main"
+venom-train-mnist = "venom.train_mnist:main"
+venom-sample = "venom.sample_mnist:main"
+venom-train-classifier = "venom.train_classifier_mnist:main"
+venom-distill-mnist = "venom.train_progressive_distill_mnist:main"
 
 [tool.setuptools.packages.find]
-include = ["diffusion_zoo*"]
+include = ["venom*"]

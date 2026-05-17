@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from diffusion_zoo.schedules import append_dims
+from venom.schedules import append_dims
 
 
 class FlowMatchingDiffusion(nn.Module):
