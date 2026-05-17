@@ -1,5 +1,9 @@
 # Venom
 
+<p align="center">
+  <img src="assets/venom-logo.png" alt="Venom project logo" width="240">
+</p>
+
 Venom is an educational PyTorch package for generative modeling dynamics. It
 collects discrete-time diffusion models, continuous-time score/SDE models,
 flow-matching models, physics-inspired samplers, one-step generation methods,
