@@ -1,26 +1,70 @@
 # Venom
 
-Educational PyTorch implementations of the main discrete-time and continuous-time diffusion families:
+Venom is an educational PyTorch package for generative modeling dynamics. It
+collects discrete-time diffusion models, continuous-time score/SDE models,
+flow-matching models, physics-inspired samplers, and one-step generation
+methods under one small MNIST-first codebase.
 
-- **DDPM**: linear beta schedule, epsilon prediction, fixed posterior variance.
-- **Improved DDPM**: cosine schedule and learned-range variance.
-- **ADM / Guided Diffusion**: class-conditional U-Net with attention and optional classifier guidance.
-- **Classifier-Free Guidance**: conditional dropout during training and guidance-scale sampling.
-- **EDM**: Karras preconditioning, log-normal noise training, Euler/Heun sampler.
-- **DPM-Solver / DPM-Solver++**: lightweight first-order fast samplers for DDPM checkpoints.
-- **DiT**: optional diffusion transformer backbone for MNIST-sized images.
-- **NCSN / NCSNv2**: denoising score matching over geometric noise scales.
-- **Score SDE**: VP, VE, and sub-VP SDE objectives with predictor-corrector sampling.
-- **PFGM / PFGM++**: Poisson-flow-style perturbation kernels and Karras-style sampling.
-- **Rectified Flow / Flow Matching**: continuous velocity fields from noise to data.
-- **Conditional Flow Matching / OT-CFM**: conditional paths and dependency-light minibatch OT pairing.
-- **Stochastic Interpolants**: noisy interpolating paths that unify flow and diffusion-style dynamics.
-- **Progressive Distillation**: teacher-student helper for compressing DDPM-family samplers.
-- **Consistency Models**: one/few-step consistency training with EDM-style preconditioning.
-- **Shortcut Models**: flow models conditioned on the requested step size.
-- **MeanFlow**: average-velocity training for one-step or few-step generation.
+The default dataset is MNIST so every implementation stays easy to read,
+modify, and benchmark before scaling to larger image datasets.
 
-The default dataset is MNIST so the code stays small enough to read and modify.
+## Supported Training Objectives
+
+| Family | `--variant` | What is trained |
+|---|---|---|
+| DDPM | `ddpm` | Epsilon-prediction DDPM with a linear beta schedule and fixed posterior variance. |
+| Improved DDPM | `improved-ddpm` | DDPM with cosine schedule and learned-range variance. |
+| ADM / Guided Diffusion | `adm` | Class-conditional DDPM-family model with learned-range variance. |
+| Classifier-Free Guidance | `cfg` | Class-conditional DDPM-family model with null-label dropout for CFG sampling. |
+| EDM | `edm` | EDM/Karras denoising objective with continuous noise levels. |
+| NCSN | `ncsn` | Noise Conditional Score Network objective over discrete geometric noise scales. |
+| NCSNv2 | `ncsnv2` | Improved NCSN-style denoising score matching. |
+| Score SDE | `score-sde-vp` | Continuous-time VP-SDE score model. |
+| Score SDE | `score-sde-ve` | Continuous-time VE-SDE score model. |
+| Score SDE | `score-sde-subvp` | Continuous-time sub-VP-SDE score model. |
+| PFGM | `pfgm` | Poisson-flow-style perturbation model. |
+| PFGM++ | `pfgm++` | PFGM++ perturbation kernel with EDM-style preconditioning. |
+| Rectified Flow | `rectified-flow` | Velocity field from noise to data along straight paths. |
+| Flow Matching | `flow-matching` | Continuous velocity field with stochastic path perturbations. |
+| Conditional Flow Matching | `conditional-flow-matching` | Conditional flow-matching path objective. |
+| OT-CFM | `ot-cfm` | Conditional flow matching with lightweight minibatch OT pairing. |
+| Stochastic Interpolants | `stochastic-interpolants` | Noisy interpolating paths with explicit path derivatives. |
+| Consistency Models | `consistency` | One/few-step consistency objective with EDM-style preconditioning. |
+| Shortcut Models | `shortcut` | Flow model conditioned on the requested integration step size. |
+| MeanFlow | `meanflow` | Average-velocity objective for one-step or few-step generation. |
+
+## Supported Samplers
+
+| Sampler | CLI option | Compatible checkpoints | Notes |
+|---|---|---|---|
+| DDPM ancestral sampler | `--sampler ddpm` | DDPM-family checkpoints | Full stochastic reverse diffusion chain. |
+| DDIM sampler | `--sampler ddim` | DDPM-family checkpoints | Deterministic when `--eta 0`; stochastic when `--eta > 0`. |
+| DPM-Solver | `--sampler dpm-solver` | DDPM-family checkpoints | Fast first-order noise-prediction ODE sampler. |
+| DPM-Solver++ | `--sampler dpm-solver++` | DDPM-family checkpoints | Fast first-order data-prediction ODE sampler. |
+| EDM/Karras sampler | native | `edm`, `pfgm`, `pfgm++` | Euler/Heun sampling over Karras noise levels. |
+| Score SDE PC sampler | native | `score-sde-*` | Predictor-corrector sampling for VP/VE/sub-VP SDEs. |
+| Annealed Langevin sampler | native | `ncsn`, `ncsnv2` | Langevin dynamics across the score network noise ladder. |
+| Flow ODE sampler | native | flow-matching variants | Euler/Heun integration from noise to data. |
+| One-step/few-step sampler | native | `consistency`, `shortcut`, `meanflow` | One-step by default; can use more steps with `--sample-steps`. |
+
+When `--sampler native` is used, Venom automatically selects the natural sampler
+for the checkpoint family. DDPM-family checkpoints default to DDIM.
+
+## Supported Guidance and Conditioning
+
+| Method | How to train | How to sample | Supported variants |
+|---|---|---|---|
+| Class conditioning | `--variant adm` | pass `--labels 0,1,2,...` | `adm` |
+| Classifier guidance | train classifier with `python -m venom.train_classifier_mnist` | pass `--classifier-checkpoint` and `--classifier-scale` | DDPM/ADM-style ancestral sampling |
+| Classifier-free guidance | `--variant cfg --class-dropout 0.1` | pass `--labels` and `--guidance-scale` | `cfg` with DDIM, DPM-Solver, or DPM-Solver++ |
+| Conditional DiT backbone | add `--backbone dit` to conditional variants | same as the selected objective | `adm`, `cfg`, and other label-aware modules when labels are provided |
+
+## Supported Backbones
+
+| Backbone | CLI option | Notes |
+|---|---|---|
+| ADM-style U-Net | `--backbone unet` | Default backbone for all MNIST experiments. |
+| Small DiT | `--backbone dit` | Patch-token transformer backbone for MNIST-sized images. |
 
 ## Install
 
@@ -252,6 +296,7 @@ This project is inspired by the following papers. Venue labels use the archival
 publication where available; recent preprints are marked as arXiv.
 
 - **DDPM**: Ho, Jain, and Abbeel. *Denoising Diffusion Probabilistic Models*. NeurIPS 2020.
+- **DDIM**: Song, Meng, and Ermon. *Denoising Diffusion Implicit Models*. ICLR 2021.
 - **Improved DDPM**: Nichol and Dhariwal. *Improved Denoising Diffusion Probabilistic Models*. ICML 2021.
 - **ADM / Guided Diffusion**: Dhariwal and Nichol. *Diffusion Models Beat GANs on Image Synthesis*. NeurIPS 2021.
 - **DiT**: Peebles and Xie. *Scalable Diffusion Models with Transformers*. ICCV 2023.
@@ -259,6 +304,8 @@ publication where available; recent preprints are marked as arXiv.
 - **NCSNv2**: Song and Ermon. *Improved Techniques for Training Score-Based Generative Models*. NeurIPS 2020.
 - **Score SDE**: Song et al. *Score-Based Generative Modeling through Stochastic Differential Equations*. ICLR 2021.
 - **EDM**: Karras et al. *Elucidating the Design Space of Diffusion-Based Generative Models*. NeurIPS 2022.
+- **DPM-Solver**: Lu et al. *DPM-Solver: A Fast ODE Solver for Diffusion Probabilistic Model Sampling in Around 10 Steps*. NeurIPS 2022.
+- **DPM-Solver++**: Lu et al. *DPM-Solver++: Fast Solver for Guided Sampling of Diffusion Probabilistic Models*. arXiv 2022.
 - **PFGM**: Xu, Liu, Tegmark, and Jaakkola. *Poisson Flow Generative Models*. NeurIPS 2022.
 - **PFGM++**: Xu et al. *PFGM++: Unlocking the Potential of Physics-Inspired Generative Models*. ICML 2023.
 - **Rectified Flow**: Liu, Gong, and Liu. *Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow*. ICLR 2023.
