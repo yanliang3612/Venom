@@ -4,6 +4,9 @@
   <a href="https://divinyan.com/Venom/">
     <img src="https://img.shields.io/badge/Project%20Page-divinyan.com%2FVenom-2ea44f?style=for-the-badge" alt="Project Page">
   </a>
+  <a href="https://divinyan.com/Venom/static/paper/Venom_paper.pdf">
+    <img src="https://img.shields.io/badge/Paper-PDF-b31b1b?style=for-the-badge" alt="Paper PDF">
+  </a>
 </p>
 
 <p align="center">
