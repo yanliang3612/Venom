@@ -157,6 +157,17 @@ If you prefer requirements only:
 pip install -r requirements.txt
 ```
 
+## Notebooks
+
+Venom includes two Jupyter notebooks that walk through the package API and
+project KPIs: training, checkpointing, sampling, guidance, conditioning, and
+family-specific usage.
+
+| Notebook | Language | Use case |
+|---|---|---|
+| [`notebooks/venom_api_kpi_tutorial.ipynb`](notebooks/venom_api_kpi_tutorial.ipynb) | Chinese | Chinese walkthrough for diffusion, VAE, normalizing flows, GAN, EBM, and guidance workflows. |
+| [`notebooks/venom_api_kpi_tutorial_en.ipynb`](notebooks/venom_api_kpi_tutorial_en.ipynb) | English | English walkthrough with the same training, sampling, KPI, API, and guidance examples. |
+
 ## Train MNIST Examples
 
 Diffusion, score, flow, and one-step training:
