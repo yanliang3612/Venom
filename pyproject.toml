@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diffusion-zoo-pytorch"
+version = "0.1.0"
+description = "Educational PyTorch implementations of diffusion, score SDE, flow matching, consistency, MeanFlow, PFGM++, DiT, and fast samplers."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+  {name = "Yanliang"},
+]
+dependencies = [
+  "torch>=2.2",
+  "torchvision>=0.17",
+  "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.4",
+]
+
+[project.scripts]
+diffusion-zoo-train-mnist = "diffusion_zoo.train_mnist:main"
+diffusion-zoo-sample = "diffusion_zoo.sample_mnist:main"
+diffusion-zoo-train-classifier = "diffusion_zoo.train_classifier_mnist:main"
+diffusion-zoo-distill-mnist = "diffusion_zoo.train_progressive_distill_mnist:main"
+
+[tool.setuptools.packages.find]
+include = ["diffusion_zoo*"]
