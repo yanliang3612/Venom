@@ -6,8 +6,8 @@
 
 Venom is an educational PyTorch package for modern generative modeling. It
 collects diffusion and score/SDE models, flow-matching models, one-step
-generation methods, foundational image VAEs, foundational image GANs, and
-energy-based models under one small MNIST-first codebase.
+generation methods, normalizing flows, foundational image VAEs, foundational
+image GANs, and energy-based models under one small MNIST-first codebase.
 
 The default dataset is MNIST so every implementation stays easy to read,
 modify, and benchmark before scaling to larger image datasets.
@@ -53,6 +53,25 @@ VAE models live under `venom.vae` and use a separate MNIST training entrypoint.
 | VQ-VAE | `vq-vae` | Discrete codebook VAE with vector quantization. |
 | Ladder / Hierarchical VAE | `ladder-vae`, `hierarchical-vae` | Two-level latent hierarchy for multi-scale image modeling. |
 | Flow-VAE | `flow-vae` | ConvVAE with planar normalizing flows in the posterior. |
+
+## Supported Flow-Based Models
+
+Normalizing flows live under `venom.flows`. These are likelihood-based
+invertible models, separate from flow matching and rectified flow in
+`venom.diffusion.flow_matching`.
+
+| Family | `--variant` | What is trained |
+|---|---|---|
+| Planar Flow | `planar-flow` | Stacked planar transforms with fixed-point inverse for sampling. |
+| Radial Flow | `radial-flow` | Stacked radial transforms with fixed-point inverse for sampling. |
+| NICE | `nice` | Additive coupling flow with exact inverse and unit log-determinant. |
+| RealNVP | `realnvp` | Affine coupling flow with exact likelihood and sampling. |
+| Glow-lite | `glow` | ActNorm + invertible linear transform + affine coupling. |
+| MAF | `maf` | Masked autoregressive flow for density estimation. |
+| IAF | `iaf` | Inverse-autoregressive educational flow. |
+| Neural Spline Flow | `neural-spline-flow` | Monotone spline-style coupling transform. |
+| FFJORD-lite / CNF | `ffjord` | Continuous normalizing flow with Hutchinson trace estimates. |
+| Flow++-style | `flow++` | ActNorm + invertible linear transform + nonlinear coupling. |
 
 ## Supported GAN Models
 
@@ -103,6 +122,7 @@ EBM models live under `venom.ebm` and use a separate MNIST training entrypoint.
 | One-step/few-step sampler | native | `consistency`, `shortcut`, `meanflow` | One-step by default; can use more steps with `--sample-steps`. |
 | Gibbs sampler | native | RBM-family EBM checkpoints | Alternating visible/hidden conditional sampling. |
 | Langevin / SGLD sampler | native | deep EBM and JEM checkpoints | Gradient-based MCMC in image space. |
+| Inverse flow sampler | native | normalizing flow checkpoints | Samples by drawing Gaussian latents and applying inverse transforms. |
 
 When `--sampler native` is used, Venom automatically selects the natural sampler
 for the checkpoint family. DDPM-family checkpoints default to DDIM.
@@ -219,6 +239,28 @@ python train_vae.py --variant flow-vae --epochs 5
 
 VAE checkpoints and preview grids are written to `runs/mnist_vae/<variant>/`.
 
+Normalizing flow training:
+
+```bash
+# Coupling and autoregressive flows
+python train_flow.py --variant nice --epochs 5
+python train_flow.py --variant realnvp --epochs 5
+python train_flow.py --variant glow --epochs 5
+python train_flow.py --variant maf --epochs 5
+python train_flow.py --variant iaf --epochs 5
+
+# Early and nonlinear flow transforms
+python train_flow.py --variant planar-flow --epochs 5
+python train_flow.py --variant radial-flow --epochs 5
+python train_flow.py --variant neural-spline-flow --epochs 5
+
+# Continuous and Flow++-style flows
+python train_flow.py --variant ffjord --epochs 5
+python train_flow.py --variant flow++ --epochs 5
+```
+
+Flow checkpoints and preview grids are written to `runs/mnist_flow/<variant>/`.
+
 GAN training:
 
 ```bash
@@ -307,6 +349,14 @@ VAE checkpoints use `sample_vae.py`:
 ```bash
 python sample_vae.py --checkpoint runs/mnist_vae/conv-vae/model_005.pt --num-samples 64
 python sample_vae.py --checkpoint runs/mnist_vae/cvae/model_005.pt --labels 0,1,2,3,4,5,6,7,8,9
+```
+
+Normalizing flow checkpoints use `sample_flow.py`:
+
+```bash
+python sample_flow.py --checkpoint runs/mnist_flow/realnvp/model_005.pt --num-samples 64
+python sample_flow.py --checkpoint runs/mnist_flow/glow/model_005.pt --num-samples 64
+python sample_flow.py --checkpoint runs/mnist_flow/neural-spline-flow/model_005.pt --num-samples 64
 ```
 
 GAN checkpoints use `sample_gan.py`:
@@ -432,6 +482,19 @@ vq_vae = VQVAE(image_size=28, channels=1, embedding_dim=64, codebook_size=512)
 vq_loss = vq_vae.training_loss(images)
 ```
 
+Normalizing flow API:
+
+```python
+import torch
+
+from venom.flows import build_mnist_flow
+
+flow, config = build_mnist_flow("realnvp", hidden_dim=512, num_layers=8)
+images = torch.randn(8, 1, 28, 28)
+bits_per_dim = flow.training_loss(images)
+samples = flow.sample(batch_size=8, device=images.device)
+```
+
 GAN API:
 
 ```python
@@ -477,10 +540,12 @@ of the full OpenAI `guided-diffusion` or EDM codebases. The APIs separate:
 - flow matching, rectified flow, OT-CFM, stochastic interpolants: `venom.diffusion.flow_matching`
 - consistency, shortcut, MeanFlow, progressive distillation: `venom.diffusion.one_step`
 - fast samplers: `venom.diffusion.samplers`
+- normalizing flows and invertible transforms: `venom.flows`
 - foundational image VAE models: `venom.vae`
 - foundational image GAN models: `venom.gan`
 - foundational image EBM models: `venom.ebm`
 - MNIST diffusion examples: `venom.diffusion.train_mnist`, `venom.diffusion.sample_mnist`
+- MNIST flow examples: `venom.flows.train_mnist`, `venom.flows.sample_mnist`
 - MNIST VAE examples: `venom.vae.train_mnist`, `venom.vae.sample_mnist`
 - MNIST GAN examples: `venom.gan.train_mnist`, `venom.gan.sample_mnist`
 - MNIST EBM examples: `venom.ebm.train_mnist`, `venom.ebm.sample_mnist`
@@ -521,6 +586,15 @@ publication where available; recent preprints are marked as arXiv.
 - **VQ-VAE**: van den Oord, Vinyals, and Kavukcuoglu. *Neural Discrete Representation Learning*. NeurIPS 2017.
 - **Ladder VAE**: Sønderby et al. *Ladder Variational Autoencoders*. NeurIPS 2016.
 - **Normalizing Flow VAE**: Rezende and Mohamed. *Variational Inference with Normalizing Flows*. ICML 2015.
+- **NICE**: Dinh, Krueger, and Bengio. *NICE: Non-linear Independent Components Estimation*. arXiv 2014.
+- **Planar / Radial Flows**: Rezende and Mohamed. *Variational Inference with Normalizing Flows*. ICML 2015.
+- **RealNVP**: Dinh, Sohl-Dickstein, and Bengio. *Density Estimation using Real NVP*. ICLR 2017.
+- **MAF**: Papamakarios, Pavlakou, and Murray. *Masked Autoregressive Flow for Density Estimation*. NeurIPS 2017.
+- **IAF**: Kingma et al. *Improved Variational Inference with Inverse Autoregressive Flow*. NeurIPS 2016.
+- **Glow**: Kingma and Dhariwal. *Glow: Generative Flow with Invertible 1x1 Convolutions*. NeurIPS 2018.
+- **Flow++**: Ho et al. *Flow++: Improving Flow-Based Generative Models with Variational Dequantization and Architecture Design*. ICML 2019.
+- **FFJORD**: Grathwohl et al. *FFJORD: Free-form Continuous Dynamics for Scalable Reversible Generative Models*. ICLR 2019.
+- **Neural Spline Flows**: Durkan et al. *Neural Spline Flows*. NeurIPS 2019.
 - **GAN**: Goodfellow et al. *Generative Adversarial Nets*. NeurIPS 2014.
 - **CGAN**: Mirza and Osindero. *Conditional Generative Adversarial Nets*. arXiv 2014.
 - **DCGAN**: Radford, Metz, and Chintala. *Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks*. ICLR 2016.
