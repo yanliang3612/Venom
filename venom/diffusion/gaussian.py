@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from venom.schedules import extract, make_beta_schedule
+from venom.diffusion.schedules import extract, make_beta_schedule
 
 
 @dataclass(frozen=True)

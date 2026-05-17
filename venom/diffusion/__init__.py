@@ -1,6 +1,4 @@
-"""PyTorch generative modeling dynamics for research and teaching."""
-
-from venom.diffusion import GaussianDiffusion, ImprovedDDPMConfig
+from venom.diffusion.gaussian import GaussianDiffusion, ImprovedDDPMConfig
 from venom.diffusion.edm import EDMDiffusion
 from venom.diffusion.flow_matching import (
     ConditionalFlowMatching,
@@ -16,29 +14,21 @@ from venom.diffusion.one_step import ConsistencyModel, MeanFlow, ProgressiveDist
 from venom.diffusion.pfgm import PFGMDiffusion, PFGMPlusPlusDiffusion
 from venom.diffusion.samplers import DDIMSampler, DDPMSampler, DPMSolverSampler
 from venom.diffusion.score_sde import ScoreSDEDiffusion, SubVPSDE, VESDE, VPSDE
-from venom.vae import BetaVAE, CVAE, ConvVAE, FlowVAE, HierarchicalVAE, IWAE, LadderVAE, VAE, VQVAE
 
 __all__ = [
+    "ConditionalFlowMatching",
+    "ConsistencyModel",
     "DDIMSampler",
     "DDPMSampler",
     "DPMSolverSampler",
-    "BetaVAE",
-    "CVAE",
-    "ConvVAE",
     "DiT",
     "EDMDiffusion",
-    "FlowVAE",
-    "ConditionalFlowMatching",
     "FlowMatching",
     "FlowMatchingDiffusion",
     "GaussianDiffusion",
-    "HierarchicalVAE",
     "ImprovedDDPMConfig",
-    "ConsistencyModel",
-    "IWAE",
-    "LadderVAE",
-    "MeanFlow",
     "MNISTClassifier",
+    "MeanFlow",
     "NCSNDiffusion",
     "OptimalTransportCFM",
     "PFGMDiffusion",
@@ -50,8 +40,6 @@ __all__ = [
     "StochasticInterpolants",
     "SubVPSDE",
     "UNet2D",
-    "VAE",
     "VESDE",
     "VPSDE",
-    "VQVAE",
 ]

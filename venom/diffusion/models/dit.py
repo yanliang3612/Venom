@@ -3,7 +3,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from venom.models.unet import SinusoidalTimeEmbedding
+from venom.diffusion.models.unet import SinusoidalTimeEmbedding
 
 
 class PatchEmbed(nn.Module):

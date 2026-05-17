@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import torch
 
-from venom.schedules import make_ddim_timesteps
+from venom.diffusion.schedules import make_ddim_timesteps
 
 
 class DDPMSampler:

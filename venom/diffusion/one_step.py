@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from venom.schedules import append_dims, karras_sigmas
+from venom.diffusion.schedules import append_dims, karras_sigmas
 
 
 class ConsistencyModel(nn.Module):

@@ -1,4 +1,4 @@
-from venom.train_mnist import main
+from venom.diffusion.train_mnist import main
 
 
 if __name__ == "__main__":

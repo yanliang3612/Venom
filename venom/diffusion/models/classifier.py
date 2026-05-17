@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from venom.models.unet import SinusoidalTimeEmbedding, _groups
+from venom.diffusion.models.unet import SinusoidalTimeEmbedding, _groups
 
 
 class MNISTClassifier(nn.Module):
