@@ -248,18 +248,24 @@ when saving grids.
 
 ## References
 
-- DDPM: Ho, Jain, and Abbeel, 2020.
-- Improved DDPM: Nichol and Dhariwal, 2021.
-- ADM / guided diffusion: Dhariwal and Nichol, 2021.
-- DiT: Peebles and Xie, 2022.
-- NCSN / NCSNv2: Song and Ermon, 2019/2020.
-- Score SDE: Song et al., 2021.
-- EDM: Karras et al., 2022.
-- PFGM / PFGM++: Xu et al., 2022/2023.
-- Rectified Flow: Liu, Gong, and Liu, 2022.
-- Flow Matching / Conditional Flow Matching: Lipman et al., 2022; Tong et al., 2023.
-- Stochastic Interpolants: Albergo and Vanden-Eijnden, 2023.
-- Progressive Distillation: Salimans and Ho, 2022.
-- Consistency Models: Song et al., 2023.
-- Shortcut Models: Frans et al., 2024.
-- MeanFlow: Geng et al., 2025.
+This project is inspired by the following papers. Venue labels use the archival
+publication where available; recent preprints are marked as arXiv.
+
+- **DDPM**: Ho, Jain, and Abbeel. *Denoising Diffusion Probabilistic Models*. NeurIPS 2020.
+- **Improved DDPM**: Nichol and Dhariwal. *Improved Denoising Diffusion Probabilistic Models*. ICML 2021.
+- **ADM / Guided Diffusion**: Dhariwal and Nichol. *Diffusion Models Beat GANs on Image Synthesis*. NeurIPS 2021.
+- **DiT**: Peebles and Xie. *Scalable Diffusion Models with Transformers*. ICCV 2023.
+- **NCSN**: Song and Ermon. *Generative Modeling by Estimating Gradients of the Data Distribution*. NeurIPS 2019.
+- **NCSNv2**: Song and Ermon. *Improved Techniques for Training Score-Based Generative Models*. NeurIPS 2020.
+- **Score SDE**: Song et al. *Score-Based Generative Modeling through Stochastic Differential Equations*. ICLR 2021.
+- **EDM**: Karras et al. *Elucidating the Design Space of Diffusion-Based Generative Models*. NeurIPS 2022.
+- **PFGM**: Xu, Liu, Tegmark, and Jaakkola. *Poisson Flow Generative Models*. NeurIPS 2022.
+- **PFGM++**: Xu et al. *PFGM++: Unlocking the Potential of Physics-Inspired Generative Models*. ICML 2023.
+- **Rectified Flow**: Liu, Gong, and Liu. *Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow*. ICLR 2023.
+- **Flow Matching**: Lipman et al. *Flow Matching for Generative Modeling*. ICLR 2023.
+- **Conditional Flow Matching / OT-CFM**: Tong et al. *Improving and Generalizing Flow-Based Generative Models with Minibatch Optimal Transport*. TMLR 2024; also presented at ICML 2023 Frontiers4LCD Workshop.
+- **Stochastic Interpolants**: Albergo, Boffi, and Vanden-Eijnden. *Stochastic Interpolants: A Unifying Framework for Flows and Diffusions*. JMLR 2025.
+- **Progressive Distillation**: Salimans and Ho. *Progressive Distillation for Fast Sampling of Diffusion Models*. ICLR 2022.
+- **Consistency Models**: Song, Dhariwal, Chen, and Sutskever. *Consistency Models*. ICML 2023.
+- **Shortcut Models**: Frans, Hafner, Levine, and Abbeel. *One Step Diffusion via Shortcut Models*. ICLR 2025 Oral.
+- **MeanFlow**: Geng et al. *Mean Flows for One-step Generative Modeling*. arXiv 2025.
