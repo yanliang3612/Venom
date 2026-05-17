@@ -6,8 +6,8 @@
 
 Venom is an educational PyTorch package for modern generative modeling. It
 collects diffusion and score/SDE models, flow-matching models, one-step
-generation methods, foundational image VAEs, and foundational image GANs under
-one small MNIST-first codebase.
+generation methods, foundational image VAEs, foundational image GANs, and
+energy-based models under one small MNIST-first codebase.
 
 The default dataset is MNIST so every implementation stays easy to read,
 modify, and benchmark before scaling to larger image datasets.
@@ -71,6 +71,23 @@ GAN models live under `venom.gan` and use a separate MNIST training entrypoint.
 | HingeGAN | `hinge-gan` | DCGAN architecture trained with hinge adversarial loss. |
 | SNGAN | `sn-gan` | Hinge GAN with spectral normalization in the discriminator. |
 
+## Supported Energy-Based Models
+
+EBM models live under `venom.ebm` and use a separate MNIST training entrypoint.
+
+| Family | `--variant` | What is trained |
+|---|---|---|
+| RBM | `rbm` | Bernoulli-Bernoulli restricted Boltzmann machine with CD/PCD. |
+| Gaussian RBM | `gaussian-rbm` | Gaussian visible units with Bernoulli hidden units. |
+| Conditional RBM | `conditional-rbm` | Label-conditioned RBM with class-dependent visible and hidden biases. |
+| ConvRBM | `conv-rbm` | Convolutional RBM for image-structured energies. |
+| Deep EBM | `deep-ebm` | CNN scalar energy model trained with SGLD negatives. |
+| Conditional Deep EBM | `conditional-ebm` | Class-conditional CNN energy `E(x, y)`. |
+| JEM | `jem` | Joint energy model using classifier logits as energies. |
+| Score Matching EBM | `score-matching-ebm` | CNN energy trained with denoising score matching. |
+| Sliced Score Matching EBM | `sliced-score-matching-ebm` | CNN energy trained with sliced score matching. |
+| NCE-EBM | `nce-ebm` | CNN energy trained with noise-contrastive estimation. |
+
 ## Supported Samplers
 
 | Sampler | CLI option | Compatible checkpoints | Notes |
@@ -84,6 +101,8 @@ GAN models live under `venom.gan` and use a separate MNIST training entrypoint.
 | Annealed Langevin sampler | native | `ncsn`, `ncsnv2` | Langevin dynamics across the score network noise ladder. |
 | Flow ODE sampler | native | flow-matching variants | Euler/Heun integration from noise to data. |
 | One-step/few-step sampler | native | `consistency`, `shortcut`, `meanflow` | One-step by default; can use more steps with `--sample-steps`. |
+| Gibbs sampler | native | RBM-family EBM checkpoints | Alternating visible/hidden conditional sampling. |
+| Langevin / SGLD sampler | native | deep EBM and JEM checkpoints | Gradient-based MCMC in image space. |
 
 When `--sampler native` is used, Venom automatically selects the natural sampler
 for the checkpoint family. DDPM-family checkpoints default to DDIM.
@@ -222,6 +241,28 @@ python train_gan.py --variant sn-gan --epochs 5
 
 GAN checkpoints and preview grids are written to `runs/mnist_gan/<variant>/`.
 
+EBM training:
+
+```bash
+# RBM-family models with contrastive divergence
+python train_ebm.py --variant rbm --epochs 5
+python train_ebm.py --variant gaussian-rbm --epochs 5
+python train_ebm.py --variant conditional-rbm --epochs 5
+python train_ebm.py --variant conv-rbm --epochs 5
+
+# Modern neural EBMs
+python train_ebm.py --variant deep-ebm --epochs 5
+python train_ebm.py --variant conditional-ebm --epochs 5
+python train_ebm.py --variant jem --epochs 5
+
+# Partition-function-free estimators
+python train_ebm.py --variant score-matching-ebm --epochs 5
+python train_ebm.py --variant sliced-score-matching-ebm --epochs 5
+python train_ebm.py --variant nce-ebm --epochs 5
+```
+
+EBM checkpoints and preview grids are written to `runs/mnist_ebm/<variant>/`.
+
 ## Sample MNIST Examples
 
 ```bash
@@ -273,6 +314,14 @@ GAN checkpoints use `sample_gan.py`:
 ```bash
 python sample_gan.py --checkpoint runs/mnist_gan/dcgan/model_005.pt --num-samples 64
 python sample_gan.py --checkpoint runs/mnist_gan/cgan/model_005.pt --labels 0,1,2,3,4,5,6,7,8,9
+```
+
+EBM checkpoints use `sample_ebm.py`:
+
+```bash
+python sample_ebm.py --checkpoint runs/mnist_ebm/rbm/model_005.pt --steps 100
+python sample_ebm.py --checkpoint runs/mnist_ebm/deep-ebm/model_005.pt --steps 100
+python sample_ebm.py --checkpoint runs/mnist_ebm/conditional-ebm/model_005.pt --labels 0,1,2,3,4,5,6,7,8,9
 ```
 
 ## Classifier Guidance
@@ -396,6 +445,23 @@ samples = generator(z)
 logits = discriminator(samples)["logits"]
 ```
 
+EBM API:
+
+```python
+import torch
+
+from venom.ebm import RBM, DeepEnergyModel, cd_loss, sgld_sample
+
+images = torch.rand(8, 1, 28, 28)
+rbm = RBM(hidden_dim=256)
+loss, negatives = cd_loss(rbm, images, steps=1)
+
+ebm = DeepEnergyModel(base_channels=64)
+x = torch.randn(8, 1, 28, 28)
+energy = ebm.energy(x)
+samples = sgld_sample(ebm, x, steps=40)
+```
+
 ## Notes
 
 This package is intended as a clean research scaffold, not a drop-in reproduction
@@ -413,9 +479,11 @@ of the full OpenAI `guided-diffusion` or EDM codebases. The APIs separate:
 - fast samplers: `venom.diffusion.samplers`
 - foundational image VAE models: `venom.vae`
 - foundational image GAN models: `venom.gan`
+- foundational image EBM models: `venom.ebm`
 - MNIST diffusion examples: `venom.diffusion.train_mnist`, `venom.diffusion.sample_mnist`
 - MNIST VAE examples: `venom.vae.train_mnist`, `venom.vae.sample_mnist`
 - MNIST GAN examples: `venom.gan.train_mnist`, `venom.gan.sample_mnist`
+- MNIST EBM examples: `venom.ebm.train_mnist`, `venom.ebm.sample_mnist`
 
 Images are normalized to `[-1, 1]` during training and converted back to `[0, 1]`
 when saving grids.
@@ -463,3 +531,10 @@ publication where available; recent preprints are marked as arXiv.
 - **ACGAN**: Odena, Olah, and Shlens. *Conditional Image Synthesis with Auxiliary Classifier GANs*. ICML 2017.
 - **HingeGAN**: Lim and Ye. *Geometric GAN*. arXiv 2017; commonly used as the hinge adversarial objective in modern GAN training.
 - **SNGAN**: Miyato et al. *Spectral Normalization for Generative Adversarial Networks*. ICLR 2018.
+- **Energy-Based Learning**: LeCun et al. *A Tutorial on Energy-Based Learning*. 2006.
+- **Contrastive Divergence / RBM**: Hinton. *Training Products of Experts by Minimizing Contrastive Divergence*. Neural Computation 2002.
+- **Score Matching**: Hyvarinen. *Estimation of Non-Normalized Statistical Models by Score Matching*. JMLR 2005.
+- **Noise-Contrastive Estimation**: Gutmann and Hyvarinen. *Noise-Contrastive Estimation*. AISTATS 2010.
+- **Sliced Score Matching**: Song et al. *Sliced Score Matching: A Scalable Approach to Density and Score Estimation*. UAI 2020.
+- **Deep EBM**: Du and Mordatch. *Implicit Generation and Modeling with Energy Based Models*. NeurIPS 2019.
+- **JEM**: Grathwohl et al. *Your Classifier is Secretly an Energy Based Model and You Should Treat it Like One*. ICLR 2020.
