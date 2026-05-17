@@ -25,10 +25,10 @@ dev = [
 ]
 
 [project.scripts]
-venom-train-mnist = "venom.diffusion.train_mnist:main"
-venom-sample = "venom.diffusion.sample_mnist:main"
-venom-train-classifier = "venom.diffusion.train_classifier_mnist:main"
-venom-distill-mnist = "venom.diffusion.train_progressive_distill_mnist:main"
+venom-train-diffusion-mnist = "venom.diffusion.train_mnist:main"
+venom-sample-diffusion = "venom.diffusion.sample_mnist:main"
+venom-train-diffusion-classifier = "venom.diffusion.train_classifier_mnist:main"
+venom-distill-diffusion-mnist = "venom.diffusion.train_progressive_distill_mnist:main"
 venom-train-vae-mnist = "venom.vae.train_mnist:main"
 venom-sample-vae = "venom.vae.sample_mnist:main"
 venom-train-gan-mnist = "venom.gan.train_mnist:main"

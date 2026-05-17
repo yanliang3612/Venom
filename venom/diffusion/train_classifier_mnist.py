@@ -17,7 +17,7 @@ from venom.utils import default_device, ensure_dir, seed_everything
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Train a noised MNIST classifier for ADM classifier guidance.")
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
-    parser.add_argument("--out-dir", type=Path, default=Path("runs/mnist/classifier"))
+    parser.add_argument("--out-dir", type=Path, default=Path("runs/mnist_diffusion/classifier"))
     parser.add_argument("--epochs", type=int, default=3)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--lr", type=float, default=2e-4)

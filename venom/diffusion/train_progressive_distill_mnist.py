@@ -16,7 +16,7 @@ from venom.utils import default_device, ensure_dir, seed_everything
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Distill a DDPM-family MNIST teacher into a student.")
     parser.add_argument("--teacher-checkpoint", type=Path, required=True)
-    parser.add_argument("--out-dir", type=Path, default=Path("runs/mnist/progressive-distillation"))
+    parser.add_argument("--out-dir", type=Path, default=Path("runs/mnist_diffusion/progressive-distillation"))
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
     parser.add_argument("--epochs", type=int, default=3)
     parser.add_argument("--batch-size", type=int, default=128)

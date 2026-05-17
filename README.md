@@ -1,18 +1,18 @@
-# Venom
+# Venom: Generative Modeling Toolkit
 
 <p align="center">
   <img src="assets/venom-logo.png" alt="Venom project logo" width="240">
 </p>
 
-Venom is an educational PyTorch package for generative modeling dynamics. It
-collects discrete-time diffusion models, continuous-time score/SDE models,
-flow-matching models, physics-inspired samplers, one-step generation methods,
-and foundational image VAE algorithms under one small MNIST-first codebase.
+Venom is an educational PyTorch package for modern generative modeling. It
+collects diffusion and score/SDE models, flow-matching models, one-step
+generation methods, foundational image VAEs, and foundational image GANs under
+one small MNIST-first codebase.
 
 The default dataset is MNIST so every implementation stays easy to read,
 modify, and benchmark before scaling to larger image datasets.
 
-## Supported Training Objectives
+## Supported Diffusion Models
 
 Diffusion, score, flow, and one-step models live under `venom.diffusion`.
 
@@ -118,67 +118,67 @@ If you prefer requirements only:
 pip install -r requirements.txt
 ```
 
-## Train MNIST Models
+## Train MNIST Examples
 
-Diffusion/score/flow/one-step training:
+Diffusion, score, flow, and one-step training:
 
 ```bash
 # Original DDPM
-python train.py --variant ddpm --epochs 5
+python train_diffusion.py --variant ddpm --epochs 5
 
 # Improved DDPM: cosine schedule + learned-range variance
-python train.py --variant improved-ddpm --epochs 5
+python train_diffusion.py --variant improved-ddpm --epochs 5
 
 # ADM-style class-conditional model
-python train.py --variant adm --epochs 5
+python train_diffusion.py --variant adm --epochs 5
 
 # Classifier-free guidance model
-python train.py --variant cfg --epochs 5 --class-dropout 0.1
+python train_diffusion.py --variant cfg --epochs 5 --class-dropout 0.1
 
 # EDM objective and Karras sampler
-python train.py --variant edm --epochs 5 --sample-steps 32
+python train_diffusion.py --variant edm --epochs 5 --sample-steps 32
 
 # NCSN / NCSNv2 score matching
-python train.py --variant ncsn --epochs 5
-python train.py --variant ncsnv2 --epochs 5
+python train_diffusion.py --variant ncsn --epochs 5
+python train_diffusion.py --variant ncsnv2 --epochs 5
 
 # Continuous-time Score SDE variants
-python train.py --variant score-sde-vp --epochs 5 --sample-steps 250
-python train.py --variant score-sde-ve --epochs 5 --sample-steps 250
-python train.py --variant score-sde-subvp --epochs 5 --sample-steps 250
+python train_diffusion.py --variant score-sde-vp --epochs 5 --sample-steps 250
+python train_diffusion.py --variant score-sde-ve --epochs 5 --sample-steps 250
+python train_diffusion.py --variant score-sde-subvp --epochs 5 --sample-steps 250
 
 # PFGM / PFGM++
-python train.py --variant pfgm --epochs 5 --sample-steps 32
-python train.py --variant pfgm++ --epochs 5 --sample-steps 32
+python train_diffusion.py --variant pfgm --epochs 5 --sample-steps 32
+python train_diffusion.py --variant pfgm++ --epochs 5 --sample-steps 32
 
 # Flow and interpolant models
-python train.py --variant rectified-flow --epochs 5 --sample-steps 50
-python train.py --variant flow-matching --epochs 5 --sample-steps 50
-python train.py --variant conditional-flow-matching --epochs 5 --sample-steps 50
-python train.py --variant ot-cfm --epochs 5 --sample-steps 50
-python train.py --variant stochastic-interpolants --epochs 5 --sample-steps 50
+python train_diffusion.py --variant rectified-flow --epochs 5 --sample-steps 50
+python train_diffusion.py --variant flow-matching --epochs 5 --sample-steps 50
+python train_diffusion.py --variant conditional-flow-matching --epochs 5 --sample-steps 50
+python train_diffusion.py --variant ot-cfm --epochs 5 --sample-steps 50
+python train_diffusion.py --variant stochastic-interpolants --epochs 5 --sample-steps 50
 
 # One-step and few-step families
-python train.py --variant consistency --epochs 5 --sample-steps 1
-python train.py --variant shortcut --epochs 5 --sample-steps 1
-python train.py --variant meanflow --epochs 5 --sample-steps 1
+python train_diffusion.py --variant consistency --epochs 5 --sample-steps 1
+python train_diffusion.py --variant shortcut --epochs 5 --sample-steps 1
+python train_diffusion.py --variant meanflow --epochs 5 --sample-steps 1
 
 # Swap the U-Net for a small DiT backbone
-python train.py --variant ddpm --backbone dit --epochs 5
-python train.py --variant rectified-flow --backbone dit --epochs 5
-python train.py --variant meanflow --backbone dit --epochs 5
+python train_diffusion.py --variant ddpm --backbone dit --epochs 5
+python train_diffusion.py --variant rectified-flow --backbone dit --epochs 5
+python train_diffusion.py --variant meanflow --backbone dit --epochs 5
 ```
 
 Progressive distillation starts from a trained DDPM-family teacher:
 
 ```bash
 python -m venom.diffusion.train_progressive_distill_mnist \
-  --teacher-checkpoint runs/mnist/improved-ddpm/model_005.pt \
+  --teacher-checkpoint runs/mnist_diffusion/improved-ddpm/model_005.pt \
   --student-steps 50 \
   --epochs 3
 ```
 
-Checkpoints and preview grids are written to `runs/mnist/<variant>/`.
+Checkpoints and preview grids are written to `runs/mnist_diffusion/<variant>/`.
 
 VAE training:
 
@@ -222,11 +222,11 @@ python train_gan.py --variant sn-gan --epochs 5
 
 GAN checkpoints and preview grids are written to `runs/mnist_gan/<variant>/`.
 
-## Sample
+## Sample MNIST Examples
 
 ```bash
-python sample.py \
-  --checkpoint runs/mnist/ddpm/model_005.pt \
+python sample_diffusion.py \
+  --checkpoint runs/mnist_diffusion/ddpm/model_005.pt \
   --sampler ddim \
   --sample-steps 50 \
   --num-samples 64 \
@@ -236,15 +236,15 @@ python sample.py \
 Fast samplers for DDPM-family checkpoints:
 
 ```bash
-python sample.py --checkpoint runs/mnist/improved-ddpm/model_005.pt --sampler dpm-solver --sample-steps 20
-python sample.py --checkpoint runs/mnist/improved-ddpm/model_005.pt --sampler dpm-solver++ --sample-steps 20
+python sample_diffusion.py --checkpoint runs/mnist_diffusion/improved-ddpm/model_005.pt --sampler dpm-solver --sample-steps 20
+python sample_diffusion.py --checkpoint runs/mnist_diffusion/improved-ddpm/model_005.pt --sampler dpm-solver++ --sample-steps 20
 ```
 
 Classifier-free guidance:
 
 ```bash
-python sample.py \
-  --checkpoint runs/mnist/cfg/model_005.pt \
+python sample_diffusion.py \
+  --checkpoint runs/mnist_diffusion/cfg/model_005.pt \
   --sampler dpm-solver++ \
   --sample-steps 20 \
   --labels 0,1,2,3,4,5,6,7,8,9 \
@@ -254,11 +254,11 @@ python sample.py \
 Continuous-time checkpoints use their native samplers:
 
 ```bash
-python sample.py --checkpoint runs/mnist/edm/model_005.pt --sample-steps 32
-python sample.py --checkpoint runs/mnist/score-sde-ve/model_005.pt --sample-steps 250
-python sample.py --checkpoint runs/mnist/pfgm++/model_005.pt --sample-steps 32
-python sample.py --checkpoint runs/mnist/rectified-flow/model_005.pt --sample-steps 50
-python sample.py --checkpoint runs/mnist/meanflow/model_005.pt --sample-steps 1
+python sample_diffusion.py --checkpoint runs/mnist_diffusion/edm/model_005.pt --sample-steps 32
+python sample_diffusion.py --checkpoint runs/mnist_diffusion/score-sde-ve/model_005.pt --sample-steps 250
+python sample_diffusion.py --checkpoint runs/mnist_diffusion/pfgm++/model_005.pt --sample-steps 32
+python sample_diffusion.py --checkpoint runs/mnist_diffusion/rectified-flow/model_005.pt --sample-steps 50
+python sample_diffusion.py --checkpoint runs/mnist_diffusion/meanflow/model_005.pt --sample-steps 1
 ```
 
 VAE checkpoints use `sample_vae.py`:
@@ -286,11 +286,11 @@ python -m venom.diffusion.train_classifier_mnist --epochs 3
 Then sample a class-conditional ADM checkpoint with classifier guidance:
 
 ```bash
-python sample.py \
-  --checkpoint runs/mnist/adm/model_005.pt \
+python sample_diffusion.py \
+  --checkpoint runs/mnist_diffusion/adm/model_005.pt \
   --sampler ddpm \
   --labels 0,1,2,3,4,5,6,7,8,9 \
-  --classifier-checkpoint runs/mnist/classifier/classifier_003.pt \
+  --classifier-checkpoint runs/mnist_diffusion/classifier/classifier_003.pt \
   --classifier-scale 1.0
 ```
 

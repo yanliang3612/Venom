@@ -15,11 +15,11 @@ from venom.utils import default_device, ensure_dir, seed_everything, unnormalize
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Train venom models on MNIST.")
+    parser = argparse.ArgumentParser(description="Train Venom diffusion, score, flow, and one-step models on MNIST.")
     parser.add_argument("--variant", choices=VARIANTS, default="ddpm")
     parser.add_argument("--backbone", choices=["unet", "dit"], default="unet")
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
-    parser.add_argument("--out-dir", type=Path, default=Path("runs/mnist"))
+    parser.add_argument("--out-dir", type=Path, default=Path("runs/mnist_diffusion"))
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--lr", type=float, default=2e-4)

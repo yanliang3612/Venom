@@ -14,7 +14,7 @@ from venom.utils import default_device, unnormalize_to_zero_to_one
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Sample MNIST images from a venom checkpoint.")
+    parser = argparse.ArgumentParser(description="Sample MNIST images from a Venom diffusion, score, flow, or one-step checkpoint.")
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--out", type=Path, default=Path("samples.png"))
     parser.add_argument("--num-samples", type=int, default=64)
