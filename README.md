@@ -6,16 +6,16 @@
 
 <p align="center">
   <a href="https://divinyan.com/Venom/">
-    <img src="https://img.shields.io/badge/Project-Page-2ea44f?style=flat-square" alt="Project Page">
+    <img src="https://img.shields.io/badge/Project-Page-0A66C2" alt="Project Page">
   </a>
   <a href="https://arxiv.org/html/2605.17605v1">
-    <img src="https://img.shields.io/badge/Paper-arXiv%3A2605.17605-b31b1b?style=flat-square&logo=arxiv&logoColor=white" alt="arXiv Paper">
+    <img src="https://img.shields.io/badge/arXiv-2605.17605-B31B1B" alt="arXiv Paper">
   </a>
   <a href="https://github.com/yanliang3612/Venom">
-    <img src="https://img.shields.io/badge/Code-GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub Repository">
+    <img src="https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white" alt="GitHub Repository">
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License">
+    <img src="https://img.shields.io/badge/License-MIT-1682D4" alt="MIT License">
   </a>
 </p>
 
