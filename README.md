@@ -1,16 +1,32 @@
-# Venom: Generative Modeling Toolkit
+<h1 align="center">Venom: A PyTorch Generative Modeling Toolkit</h1>
+
+<p align="center">
+  <img src="assets/venom-logo.png" alt="Venom project logo" width="240">
+</p>
 
 <p align="center">
   <a href="https://divinyan.com/Venom/">
-    <img src="https://img.shields.io/badge/Project%20Page-divinyan.com%2FVenom-2ea44f?style=for-the-badge" alt="Project Page">
+    <img src="https://img.shields.io/badge/Project-Page-2ea44f?style=flat-square" alt="Project Page">
   </a>
-  <a href="https://divinyan.com/Venom/static/paper/Venom_paper.pdf">
-    <img src="https://img.shields.io/badge/Paper-PDF-b31b1b?style=for-the-badge" alt="Paper PDF">
+  <a href="https://arxiv.org/html/2605.17605v1">
+    <img src="https://img.shields.io/badge/Paper-arXiv%3A2605.17605-b31b1b?style=flat-square&logo=arxiv&logoColor=white" alt="arXiv Paper">
+  </a>
+  <a href="https://github.com/yanliang3612/Venom">
+    <img src="https://img.shields.io/badge/Code-GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub Repository">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License">
   </a>
 </p>
 
 <p align="center">
-  <img src="assets/venom-logo.png" alt="Venom project logo" width="240">
+  The official implementation accompanying the arXiv paper
+  <em>Venom: A PyTorch Generative Modeling Toolkit</em>.
+</p>
+
+<p align="center">
+  Liang Yan<br>
+  <strong>arXiv preprint arXiv:2605.17605, 2026</strong>
 </p>
 
 Venom is an educational PyTorch package for modern generative modeling. It
@@ -636,10 +652,10 @@ publication where available; recent preprints are marked as arXiv.
 ## Citation
 
 ```bibtex
-@software{yan2026venom,
-  title = {Venom: A PyTorch Generative Modeling Toolkit},
-  author = {Yan, Liang},
-  year = {2026},
-  url = {https://github.com/yanliang3612/Venom}
+@article{yan2026venom,
+  title={Venom: A PyTorch Generative Modeling Toolkit},
+  author={Yan, Liang},
+  journal={arXiv preprint arXiv:2605.17605},
+  year={2026}
 }
 ```
