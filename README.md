@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/venom-logo.png" alt="Venom project logo" width="80" align="middle"><img src="assets/venom-header.svg" alt="Venom: A PyTorch Generative Modeling Toolkit" width="840" align="middle">
+  <img src="assets/venom-header.svg" alt="Venom: A PyTorch Generative Modeling Toolkit" width="1000">
 </p>
 
 <p align="center">
@@ -8,9 +8,6 @@
   </a>
   <a href="https://arxiv.org/html/2605.17605v1">
     <img src="https://img.shields.io/badge/arXiv-2605.17605-B31B1B" alt="arXiv Paper">
-  </a>
-  <a href="https://github.com/yanliang3612/Venom">
-    <img src="https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white" alt="GitHub Repository">
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-1682D4" alt="MIT License">
