@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="assets/venom-header.svg" alt="Venom: A PyTorch Generative Modeling Toolkit" width="1000">
+  <img src="assets/venom-logo.png" alt="Venom project logo" width="128"><br>
+  <img src="assets/venom-title.svg" alt="Venom: A PyTorch Generative Modeling Toolkit" width="1000">
 </p>
 
 <p align="center">
