@@ -1,4 +1,6 @@
-<h1 align="center"><img src="assets/venom-logo.png" alt="Venom project logo" width="64" align="left">Venom: A PyTorch Generative Modeling Toolkit</h1>
+<p align="center">
+  <img src="assets/venom-header.svg" alt="Venom: A PyTorch Generative Modeling Toolkit" width="1000">
+</p>
 
 <p align="center">
   <a href="https://divinyan.com/Venom/">
